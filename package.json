@@ -1,0 +1,28 @@
+{
+  "name": "grievance360-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Enterprise AI-Powered Grievance Redressal and Analytics Monorepo",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=@grievance360/web",
+    "dev:web": "npm run dev --workspace=@grievance360/web",
+    "build:web": "npm run build --workspace=@grievance360/web",
+    "lint:web": "npm run lint --workspace=@grievance360/web",
+    "docker:up": "docker-compose up --build",
+    "docker:down": "docker-compose down"
+  },
+  "keywords": [
+    "grievance-redressal",
+    "fastapi",
+    "nextjs",
+    "celery",
+    "monorepo",
+    "sentence-transformers"
+  ],
+  "author": "Grievance360 Engineering Team",
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: grievance360-api
+    runtime: python
+    buildCommand: "pip install -r apps/api/requirements.txt"
+    startCommand: "cd apps/api && uvicorn main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: grievance360-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: grievance360-redis
+          property: connectionString
+
+  - type: web
+    name: grievance360-web
+    runtime: node
+    buildCommand: "npm install && npm run build --workspace=@grievance360/web"
+    startCommand: "npm run start --workspace=@grievance360/web"
+    envVars:
+      - key: NODE_VERSION
+        value: 20.17.0
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: grievance360-api
+          property: host
+
+  - type: keyvalue
+    name: grievance360-redis
+    ipAllowList: []
+
+databases:
+  - name: grievance360-db
+    databaseName: grievance360_db
+    user: grievance360_user
+    plan: free
+    postgresMajorVersion: "15"
